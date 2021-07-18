@@ -26,6 +26,8 @@ The solution to the problem is the new syntax allowing you to explicitly mark ex
 ```
 max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))[60m:1m])
 ```
+![Simple Graph](subquery.png)
+
 Previously one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times, something like:
 
 ```
