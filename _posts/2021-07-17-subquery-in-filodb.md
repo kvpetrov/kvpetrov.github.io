@@ -16,7 +16,7 @@ sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a rate of Counter0. 
 ![Simple Graph](https://kvpetrov.github.io/assets/img/simple_graph.png)
 
-You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would want to run a query like this one:
+You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would try to run a query like this one:
 ```
 max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m])))
 ```
@@ -28,13 +28,13 @@ max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}
 ```
 ![Simple Graph](https://kvpetrov.github.io/assets/img/subquery.png)
 
-Previously one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times, something like:
+Even without subqueries one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times. Using out example one would write a rule similar to the below:
 
 ```
 record: nemspace:Counter0:sum_rate
 sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 ```
-Before being able to access the data one would have to wait for the recording rule to produce sufficient amount of data.
+The issue with the recording rules is the length of time one would need to wait to valiate his recording rules. Subqueries allow to iterate on recording rules very quickly
 
 ### Motivation
 Queries similar to presented in the above section are useful for reporting, billing, and capacity planning. Query below shows a maximum cpu usage of a container over a 24 period of time. 
@@ -45,7 +45,6 @@ max_over_time(
    )[24h:1h]
 )
 ```
-Generally speaking, queries like the above, could probably be addressed with recording rules, however, writing proper recording rule is not easy if one has to wait a day before he can validate that it is correct. Subqueries allow to iterate on recording rules very quickly.
 
 ### Limitations
 #### Performance
