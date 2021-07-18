@@ -9,11 +9,8 @@ Subquery was introduced in Prometheus 2.7 and we started implementing the featur
 
 ### What is subquery
 something about subquery
-```tsql
-SELECT This, [Is], A, Code, Block -- Using SSMS style syntax highlighting
-    , REVERSE('abc')
-FROM dbo.SomeTable s
-    CROSS JOIN dbo.OtherTable o;
+```
+count(Counter2{_ws_="aci-telemetry",_ns_="Card-500-MCP-WEST-0"})[10m:1m]
 ```
 
 ### Motivation
