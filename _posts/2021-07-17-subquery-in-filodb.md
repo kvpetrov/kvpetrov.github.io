@@ -13,11 +13,20 @@ Imagine you have a simple query
 ```
 sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 ```
-If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a per minute rate of Counter0. You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you are out of luck if subquery feature is not available for you.
-Pre-2019 PromQL allows one to run functions on the range vectors similar to the one we just generated but ...
+If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a per minute rate of Counter0. You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would want to run a query like this one:
+```
+max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m])))
+```
+In Prometheus, you will get an error "expected type range vector in call to function "max_over_time". The expression above indeed does not make sense. What you want is to run the expression "sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))" N times, where N = end - start (start and end are expected to be minutes). The problem though is that normal range query API of Prometheus or FiloDB will run the top most expression multiple times, which is function "max_over_time". You, however, want to run "sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))" N times and feed the results back to max_over_time. 
+
+The solution to the problem is the new syntax allowing you to explicitly mark expression that you want to run multiple times allowing to generate a range vector which you can consume later on with a range function. Hence, we would rewrite the previous broken query:
+```
+max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))[60m:1m])
+```
+
 
 ### Motivation
-Very often subqueries are used for alerting when we cannot use the metrics as is but need to transform it into smoother version of itself.
+Queries similar to presented in the above section are useful for reporting allowing to bill customers or do capacity planning.
 
 ### Limitations
 #### Performance
