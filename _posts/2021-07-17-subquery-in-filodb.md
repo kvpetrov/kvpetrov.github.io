@@ -1,6 +1,6 @@
 ## Introducing Subquery in FiloDB
 
-Subquery was introduced in Prometheus in 2019 and we started implementing the feature in FiloDB in 2020. The current integration branch is feature complete for subquery though some of its functionality depends on the new ANTLR based parser. In this post I will describe:
+Subquery was introduced in Prometheus 2.7 and we started implementing the feature in FiloDB in 2020. The current integration branch is feature complete though some of its functionality depends on the new ANTLR based parser. In this post I will describe:
 * the feature itself
 * motivation to implement subquery in FiloDB
 * limitations of the approach.
