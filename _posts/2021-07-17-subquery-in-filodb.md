@@ -52,6 +52,12 @@ for (int i=start; i<end; i+=step) {
 }
 return result
 ```
-#### Unimplemented
 
-quantile_over_time function for subqueries is not implemented yet.
+For various reasons we do not do so and instead retrieve the whole time series in one swing and do the requested transformation on it later. One can come up with a query like this one:
+'''
+rate(foo[1m])[180d:30d]
+'''
+This would essentially force us to retrieve the entire 180 days of foo from the storage and later extract only 6 minutes out of it. We assume that such sampling queries, however, are not common.
+
+#### Unimplemented
+Currently, not all of the _over_time functions are implemented for subqueries. For example, quantile_over_time function for subqueries is not implemented yet.
