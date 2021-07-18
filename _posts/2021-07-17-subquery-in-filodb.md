@@ -14,7 +14,7 @@ Imagine you have a simple query
 sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 ```
 If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a rate of Counter0. 
-![Simple Graph](simple_graph.png)
+![Simple Graph](https://kvpetrov.github.io/assets/img/simple_graph.png)
 
 You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would want to run a query like this one:
 ```
@@ -26,7 +26,7 @@ The solution to the problem is the new syntax allowing you to explicitly mark ex
 ```
 max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))[60m:1m])
 ```
-![Simple Graph](subquery.png)
+![Simple Graph](https://kvpetrov.github.io/assets/img/subquery.png)
 
 Previously one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times, something like:
 
