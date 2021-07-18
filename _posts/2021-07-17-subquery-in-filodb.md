@@ -13,7 +13,7 @@ Imagine you have a simple query
 ```
 sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 ```
-If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a per minute rate of Counter0. You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would want to run a query like this one:
+If you invoke such a query with a range query API given a particular start/end/step over grafana, you would see a graph showing a rate of Counter0. You can eyeball max min and can even approximate an average, however, if you want the exact number computed and presented to you, you would want to run a query like this one:
 ```
 max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m])))
 ```
@@ -23,10 +23,24 @@ The solution to the problem is the new syntax allowing you to explicitly mark ex
 ```
 max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))[60m:1m])
 ```
+Previously one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times, something like:
 
+```
+record: nemspace:Counter0:sum_rate
+sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
+```
+Before being able to access the data one would have to wait for the recording rule to produce sufficient amount of data.
 
 ### Motivation
-Queries similar to presented in the above section are useful for reporting allowing to bill customers or do capacity planning.
+Queries similar to presented in the above section are useful for reporting, billing, and capacity planning. Query below shows a maximum cpu usage of a container over a 24 period of time. 
+```
+max_over_time(
+   sum by (container) (
+      rate(container_cpu_usage_seconds_total{_ws_="ws",_ns_="ns"}[1h])
+   )[24h:1h]
+)
+```
+Generally speaking, queries like the above, could probably be addressed with recording rules, however, writing proper recording rule is not easy if one has to wait a day before he can validate that it is correct. Subqueries allow to iterate on recording rules very quickly.
 
 ### Limitations
 #### Performance
@@ -40,4 +54,4 @@ return result
 ```
 #### Unimplemented
 
-quantile_over_time function is not implemented yet.
+quantile_over_time function for subqueries is not implemented yet.
