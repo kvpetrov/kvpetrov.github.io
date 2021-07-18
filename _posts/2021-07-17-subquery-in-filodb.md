@@ -16,7 +16,7 @@ count(Counter2{_ws_="aci-telemetry",_ns_="Card-500-MCP-WEST-0"})[10m:1m]
 ### Motivation
 Very often subqueries are used for alerting when we cannot use the metrics as is but need to transform it into smoother version of itself.
 
-#### Limitations
+### Limitations
 The most straitforward way to implmenet subquery is to run multiple simple subqueries exactly as many times are there are steps in the subquery lookback.
 
 ```
