@@ -48,7 +48,7 @@ max_over_time(
 
 ### Limitations
 #### Performance
-The most straitforward way to implemenet subquery is to run multiple simple queries exactly as many times are there are steps in the subquery lookback.
+The most straightforward way to implemenet subquery is to run multiple simple queries exactly as many times are there are steps in the subquery lookback.
 
 ```
 for (int i=start; i<end; i+=step) {
