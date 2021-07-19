@@ -34,7 +34,7 @@ Even without subqueries one could still solve the problem by using recording rul
 record: nemspace:Counter0:sum_rate
 sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}[1m]))
 ```
-The issue with the recording rules is the length of time one would need to wait to valiate his recording rules. Subqueries allow to iterate on recording rules very quickly
+The issue with the recording rules is the length of time one would need to wait to valiate his recording rules. Subqueries allow to iterate on recording rules very quickly. We need subqueries to help visualize the output of a recording rule.
 
 ### Motivation
 Queries similar to presented in the above section are useful for reporting, billing, and capacity planning. Query below shows a maximum cpu usage of a container over a 24 period of time. 
