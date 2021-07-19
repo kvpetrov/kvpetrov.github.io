@@ -28,7 +28,7 @@ max_over_time(sum(rate(Counter0{_ws_="aci-telemetry", _ns_="Card-5k-MCP-EAST-0"}
 ```
 ![Simple Graph](https://kvpetrov.github.io/assets/img/subquery.png)
 
-Even without subqueries one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times. Using out example one would write a rule similar to the below:
+Even without subqueries one could still solve the problem by using recording rules and essentially producing a new metric out of the expression that we want to repeat multiple times. Using our example one would write a rule similar to the below:
 
 ```
 record: nemspace:Counter0:sum_rate
